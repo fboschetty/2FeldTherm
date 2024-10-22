@@ -284,16 +284,16 @@ def tf_temp(
     return pd.DataFrame(results, columns=cols)
 
 
-def feld_peturb(X: pd.Series, amount: float = 0.0025) -> pd.Series:
-    """Peturb feldspar composition.
+def feld_perturb(X: pd.Series, amount: float = 0.0025) -> pd.Series:
+    """perturb feldspar composition.
 
     Params:
-        X (pd.Series): Feldspar composition to be peturbed.
+        X (pd.Series): Feldspar composition to be perturbed.
 
     Returns:
-        X_peturb (pd.Series): Peturbed compositon.
+        X_perturb (pd.Series): perturbed compositon.
     """
-    peturb = pd.DataFrame([
+    perturb = pd.DataFrame([
         [ 2, -1, -1],
         [-1, -1,  2],
         [-1,  2, -1],
@@ -302,11 +302,11 @@ def feld_peturb(X: pd.Series, amount: float = 0.0025) -> pd.Series:
         [ 1, -2,  1],
     ], columns=["An", "Ab", "Or"])
 
-    peturb = peturb * amount
-    peturb = pd.concat([peturb, peturb*2, peturb*3])  # add stronger peturbations
-    peturb = pd.concat([pd.DataFrame({"An": 0, "Ab": 0, "Or": 0}, index=[0]), peturb]).reset_index(drop=True)  # add a non-peturbation to include original comp
+    perturb = perturb * amount
+    perturb = pd.concat([perturb, perturb*2, perturb*3])  # add stronger perturbations
+    perturb = pd.concat([pd.DataFrame({"An": 0, "Ab": 0, "Or": 0}, index=[0]), perturb]).reset_index(drop=True)  # add a non-perturbation to include original comp
 
-    return X + peturb
+    return X + perturb
 
 
 def feld_comb(Af_X: pd.DataFrame, Pf_X: pd.DataFrame) -> tuple[pd.DataFrame]:
@@ -339,15 +339,15 @@ def feld_comb(Af_X: pd.DataFrame, Pf_X: pd.DataFrame) -> tuple[pd.DataFrame]:
     return Af_X_comb, Pf_X_comb
 
 
-def tf_temp_peturb(
+def tf_temp_perturb(
     Af_X: pd.DataFrame | pd.Series,
     Pf_X: pd.DataFrame | pd.Series,
     P: float | list[float],
     T_init: float,
     inter_params: pd.DataFrame
 ) -> tuple[pd.DataFrame, list[pd.DataFrame]]:
-    """Calculate ternary feldspar temperature by peturbing feldspar composition. Uses same approach as Furhman and Lindsley 1988.
-    Produces the best peturbed composition and temperature by finding that which has the smallest standard deviation between the three calculated temperatures.
+    """Calculate ternary feldspar temperature by perturbing feldspar composition. Uses same approach as Furhman and Lindsley 1988.
+    Produces the best perturbed composition and temperature by finding that which has the smallest standard deviation between the three calculated temperatures.
 
     Params:
         Af_X (pd.DataFrame | pd.Series): Alkali feldspar composition.
@@ -358,7 +358,7 @@ def tf_temp_peturb(
 
     Returns:
         Best (pd.DataFrame): Composition with most similar ternary temperatures.
-        All (pd.DataFrame): All calculated temperatures from peturbed compositions.
+        All (pd.DataFrame): All calculated temperatures from perturbed compositions.
     """
     Best = pd.DataFrame(columns=[
         "Af_XAb", "Af_XOr", "Af_XAn",
@@ -383,12 +383,12 @@ def tf_temp_peturb(
     for index, af_row in Af_X.iterrows():
         pf_row = Pf_X.loc[index]
 
-        # Peturb Feldspar Compositions
-        Af_peturb = feld_peturb(af_row)
-        Pf_peturb = feld_peturb(pf_row)
+        # perturb Feldspar Compositions
+        Af_perturb = feld_perturb(af_row)
+        Pf_perturb = feld_perturb(pf_row)
 
         # Find Unique Combinations
-        Af_comb, Pf_comb = feld_comb(Af_peturb, Pf_peturb)
+        Af_comb, Pf_comb = feld_comb(Af_perturb, Pf_perturb)
 
         # Calculate pair temperatures
         Comb_T = tf_temp(Af_comb, Pf_comb, P[index], T_init, inter_params)
