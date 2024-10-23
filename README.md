@@ -8,24 +8,22 @@ Example usage of the thermometer can be found in the *2FeldTherm.ipynb* notebook
 
 **Interaction Parameters**
 
-The thermometer relies on ternary feldspar interaction, or mixing, parameters. This package contains several different sets from the literature:
+The thermometer relies on ternary feldspar interaction, or mixing, parameters. This package contains several different sets from the literature, which are stored in their own class:
 
 ```python
 import ternary_feldspar_therm as tf
-tf.interaction_parameters.keys()
-# dict_keys(['G1984', 'GU1986', 'NB1987', 'LN1988', 'FL1988', 'EG1990', 'B2004_Al', 'B2004_MM'])
+tf.interaction_parameters.display_all()
+
+## Available Interaction Parameters
+## G1984: Ghiorso 1984
+## GU1986: Green and Usdansky 1986
+## NB1987: Nekvasil and Burnham 1987
+## LN1988: Lindsley and Nekvasil 1988
+## FL1988: Fuhrman and Lindsley 1988
+## EG1990: Elkins and Grove 1990
+## B2004_Al: Benisek et al 2004 Aluminium Avoidance
+## B2004_MM: Benisek et al 2004 Molecular Mixing
 ```
-
-Where each key in the dictionary corresponds to a model:
-
-* G1984, Ghiorso (1984).
-* GU1986, Green and Usdansky (1986).
-* NB1987, Nekvasil and Burnham (1987).
-* LN1988, Lindsley and Nekvasil (1988).
-* FL1988, Furhman and Lindsley (1988).
-* EG1990, Elkins and Grove (1990).
-* B2004_Al, Benisek et al,. (2004) Aluminium Avoidance.
-* B2004_MM, Benisek et al., (2004) Molecular Mixing.
 
 Additional parameters can be added easily as a dataframe.
 
